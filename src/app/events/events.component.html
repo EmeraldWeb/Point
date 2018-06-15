@@ -1,0 +1,44 @@
+<div *ngIf="selectedEvent" [ngSwitch]="selectedEvent.type">
+  <app-news [news]="selectedEvent" *ngSwitchCase="'news'"></app-news>
+
+  <app-transaction [transaction]="selectedEvent" *ngSwitchCase="'transaction'"></app-transaction>
+</div>
+
+<h2>Events List</h2>
+<form (submit)="submitNewEvent()">
+    Add new event:
+    <input [(ngModel)]="newEvent.id"  name="id" placeholder="id">
+    <input [(ngModel)]="newEvent.type" name="type" placeholder="type">
+
+    <input type="submit" value="Add">
+</form>
+
+<button (click)="sortDate()">Newest</button>
+<button (click)="sortDateReverse()">Oldest</button>
+<button (click)="sortAll()">All</button>
+<button (click)="sortNews()">News</button>
+<button (click)="sortTransactions()">Transactions</button>
+
+<ul>
+  <li *ngFor="let event of events" (click)="onSelect(event)">
+    <div>{{ event.type | titlecase }}</div>
+
+    <div [ngSwitch]="event.type">
+      <div *ngSwitchCase="'news'"><!--if was event.readed, then add class-->
+        <div>{{ event.header }}</div>
+        <div *ngIf="event.readed">Readed ? {{ event.readed }}</div>
+      </div>
+
+      <div *ngSwitchCase="'transaction'">
+        <div>
+          {{ event.delta }}
+          {{ event.sum }}
+          {{ event.currency }}
+        </div>
+        <div *ngIf="event.hide">Hided ? {{ event.hide }}</div>
+      </div>
+
+      <div *ngIf="event.date">date - {{ event.date | date }}</div>
+    </div>
+  </li>
+</ul>
