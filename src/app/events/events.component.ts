@@ -13,6 +13,7 @@ export class EventsComponent implements OnInit {
   events: Event[];
   selectedEvent: Event;
   newEvent = new Event();
+  filters: object;
 
   onSelect(event: Event): void {
     this.selectedEvent = event;
@@ -45,6 +46,9 @@ export class EventsComponent implements OnInit {
     if (!this.newEvent.id) {
       this.newEvent.id = Math.floor(Math.random() * 100);
     }
+    if (!(this.newEvent.type === 'news' || this.newEvent.type === 'transaction')) {
+      this.newEvent.type = 'other';
+    }
 
     this.eventService.addEvent(this.newEvent);
     this.newEvent = new Event();
@@ -58,6 +62,20 @@ export class EventsComponent implements OnInit {
   constructor(private eventService: EventService) { }
 
   ngOnInit() {
+    this.sortDate = this.sortDate.bind(this);
+    this.sortDateReverse = this.sortDateReverse.bind(this);
+    this.sortAll = this.sortAll.bind(this);
+    this.sortNews = this.sortNews.bind(this);
+    this.sortTransactions = this.sortTransactions.bind(this);
+
+    this.filters = [
+      {type: 'Newest', func: this.sortDate},
+      {type: 'Oldest', func: this.sortDateReverse},
+      {type: 'All', func: this.sortAll},
+      {type: 'News', func: this.sortNews},
+      {type: 'Transactions', func: this.sortTransactions},
+    ];
+
     this.getEvents();
   }
 }

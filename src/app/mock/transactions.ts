@@ -3,7 +3,7 @@ import { Transaction } from '../businessClass/transaction';
 export const TRANSACTIONS: Transaction[] = [
     {
         id: 3,
-        date: new Date(2018, 12, 21),
+        date: new Date(2016, 12, 21),
         type: 'transaction',
         sum: 1000,
         currency: 'USD',

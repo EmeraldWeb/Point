@@ -1,44 +1,64 @@
-<div *ngIf="selectedEvent" [ngSwitch]="selectedEvent.type">
-  <app-news [news]="selectedEvent" *ngSwitchCase="'news'"></app-news>
+<div class="events">
+  <h2 class="header-secondary">
+    Events List
+  </h2>
 
-  <app-transaction [transaction]="selectedEvent" *ngSwitchCase="'transaction'"></app-transaction>
-</div>
-
-<h2>Events List</h2>
-<form (submit)="submitNewEvent()">
+  <h3 class="header-common">
     Add new event:
-    <input [(ngModel)]="newEvent.id"  name="id" placeholder="id">
-    <input [(ngModel)]="newEvent.type" name="type" placeholder="type">
+  </h3>
 
-    <input type="submit" value="Add">
-</form>
+  <form class="events-form" (submit)="submitNewEvent()">
+    <input class="input-text" [(ngModel)]="newEvent.id"  name="id" placeholder="id">
+    <input class="input-text" [(ngModel)]="newEvent.type" name="type" placeholder="type">
 
-<button (click)="sortDate()">Newest</button>
-<button (click)="sortDateReverse()">Oldest</button>
-<button (click)="sortAll()">All</button>
-<button (click)="sortNews()">News</button>
-<button (click)="sortTransactions()">Transactions</button>
+    <button class="btn" type="submit">Add</button>
+  </form>
 
-<ul>
-  <li *ngFor="let event of events" (click)="onSelect(event)">
-    <div>{{ event.type | titlecase }}</div>
+  <div class="events-selected" *ngIf="selectedEvent" [ngSwitch]="selectedEvent.type">
+    <h3 class="header-common">
+      Selected event: {{ selectedEvent.type | titlecase }}
+    </h3>
 
-    <div [ngSwitch]="event.type">
-      <div *ngSwitchCase="'news'"><!--if was event.readed, then add class-->
-        <div>{{ event.header }}</div>
-        <div *ngIf="event.readed">Readed ? {{ event.readed }}</div>
-      </div>
+    <app-news [news]="selectedEvent" *ngSwitchCase="'news'"></app-news>
 
-      <div *ngSwitchCase="'transaction'">
-        <div>
-          {{ event.delta }}
-          {{ event.sum }}
-          {{ event.currency }}
+    <app-transaction [transaction]="selectedEvent" *ngSwitchCase="'transaction'"></app-transaction>
+  </div>
+
+  <h3 class="header-common">
+    List:
+  </h3>
+
+  <ul class="events-filter">
+    <li *ngFor="let filter of filters">
+      <button class="btn-filter" (click)="filter.func()">{{ filter.type }}</button>
+    </li>
+  </ul>
+
+  <ul class="events-list">
+    <li class="events-list_item" *ngFor="let event of events" (click)="onSelect(event)" [ngClass]="{'x_hide': event.hide}">
+      <div [ngSwitch]="event.type">
+        <div class="events-list_news" *ngSwitchCase="'news'" [ngClass]="{'x_readed': event.readed}">
+          <div>{{ event.type | titlecase }}</div>
+          <div>{{ event.header }}</div>
+          <div *ngIf="event.date">{{ event.date | date }}</div>
         </div>
-        <div *ngIf="event.hide">Hided ? {{ event.hide }}</div>
-      </div>
 
-      <div *ngIf="event.date">date - {{ event.date | date }}</div>
-    </div>
-  </li>
-</ul>
+        <div class="events-list_transaction" *ngSwitchCase="'transaction'">
+          <div>
+            <div>{{ event.type | titlecase }}</div>
+            <div class="currency-value" [ngClass]="{'x_delta': event.delta}">
+              {{ event.sum }}
+              {{ event.currency }}
+            </div>
+            <div *ngIf="event.date">{{ event.date | date }}</div>
+          </div>
+        </div>
+
+        <div class="events-list_other" *ngSwitchCase="'other'">
+          <div>{{ event.type | titlecase }}</div>
+          <div *ngIf="event.date">{{ event.date | date }}</div>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>

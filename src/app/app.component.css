@@ -1,0 +1,38 @@
+:host > * {
+    position: relative;
+    z-index: 1;
+}
+
+:host::before {
+    content: '';
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    right: 0;
+    height: 700px;
+    width: 100%;
+    background-image: url("../assets/img/artboard.jpg");
+    background-repeat: no-repeat;
+    background-position-x: right;
+}
+
+.events-form {
+
+}
+
+@media (min-width: 768px) {
+    :host::after {
+        content: '';
+        position: fixed;
+        z-index: 0;
+        bottom: 0;
+        right: 0;
+        height: 400px;
+        width: 100%;
+        background-image: url("../assets/img/women.png");
+        background-repeat: no-repeat;
+        background-size: 820px;
+        background-position-x: -320px;
+        transform: scaleX(-1);
+    }
+}

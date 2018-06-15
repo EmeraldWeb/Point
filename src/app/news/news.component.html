@@ -1,8 +1,7 @@
-<div *ngIf="news">
-    <div>{{ news.type | titlecase }}</div>
-    <div>{{ news.header }}</div>
+<div class="news-card" *ngIf="news">
+    <h3>{{ news.header }}</h3>
     <div>{{ news.content }}</div>
-    <div *ngIf="news.date">date - {{ news.date | date }}</div>
+    <div *ngIf="news.date">{{ news.date | date }}</div>
 
-    <button (click)="markReaded(news.id)">Introduced</button>
+    <button class="btn" (click)="markReaded(news.id)">Introduced</button>
 </div>

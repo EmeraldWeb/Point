@@ -1,13 +1,11 @@
-<div *ngIf="transaction">
-  <div>{{ transaction.type | titlecase }}</div>
-  <div>
-    {{ transaction.delta }}
+<div class="transaction-card" *ngIf="transaction">
+  <div class="currency-value" [ngClass]="{'x_delta': transaction.delta}">
     {{ transaction.sum }}
     {{ transaction.currency }}
   </div>
   <div>{{ transaction.from }}</div>
   <div>{{ transaction.description }}</div>
-  <div *ngIf="transaction.date">date - {{ transaction.date | date }}</div>
+  <div *ngIf="transaction.date">{{ transaction.date | date }}</div>
 
-  <button (click)="hideTransaction(transaction.id)">Delete</button>
+  <button class="btn" (click)="hideTransaction(transaction.id)">Delete</button>
 </div>
